@@ -52,7 +52,7 @@ function generateProfileCard(profileData) {
 }
 
 function getUserRepo(user) {
-  let reposContainer = document.querySelector(".reposContainer");
+  let reposContainer = document.querySelector("#reposContainer");
   const API_URL = `https://api.github.com/users/${user}/repos?per_page=5&sort=created:asc`;
   axios
     .get(API_URL)
