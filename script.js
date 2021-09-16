@@ -62,7 +62,7 @@ function generateProfileCard(profileData) {
 
 function getUserRepo(user) {
   let reposContainer = document.getElementById("reposContainer");
-  const API_URL = `https://api.github.com/users/${user}/repos?per_page=5&sort=created:asc`;
+  const API_URL = `https://api.github.com/users/${user}/repos?`;
   axios
     .get(API_URL)
     .then((result) => {
@@ -70,8 +70,7 @@ function getUserRepo(user) {
       reposContainer.innerHTML = generateReposCard(result.data);
     })
     .catch((err) => {
-      console.error(err);
-      displayError("Something Went Wrong! Oops!");
+      displayError(err.response.data.message);
     });
 }
 
@@ -83,7 +82,7 @@ function getUserProfile(user) {
     .then((result) => {
       profileData.innerHTML = generateProfileCard(result.data);
     })
-    .catch(() => displayError("Something Went Wrong! Try Again!"));
+    .catch((err) => displayError("err.reponse.data.message"));
 }
 
 function main() {
