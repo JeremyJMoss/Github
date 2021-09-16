@@ -17,7 +17,7 @@ function generateReposCard(reposData) {
       <div class="card-body">
         <h5 class="card-title"><a href="${repo.html_url}">${repo.full_name}</a></h5>
         <p class="card-text">
-          ${repo.description}
+          ${repo.description ? repo.description : "N/A"}
         </p>
       </div>
     </div>
@@ -41,8 +41,8 @@ function generateProfileCard(profileData) {
                 <p class="card-text">${profileData.location}</p>
                 <p class="card-text"><a href="#">${profileData.html_url}</a></p>
                 <p class="card-text"><a href="#">${profileData.blog}</a></p>
-                <p class="card-text">${profileData.email}</p>
-                <p class="card-text">${profileData.bio}</p>
+                <p class="card-text">${profileData.email ? profileData.email : "Hidden"}</p>
+                <p class="card-text">${profileData.bio ? profileData.bio : "Hidden"}</p>
                 <hr />
                 <p class="card-text">Followers: ${profileData.followers}</p>
                 <p class="card-text">Following: ${profileData.following}</p>
@@ -52,7 +52,7 @@ function generateProfileCard(profileData) {
 }
 
 function getUserRepo(user) {
-  let reposContainer = document.querySelector(".reposContainer");
+  let reposContainer = document.getElementById("reposContainer");
   const API_URL = `https://api.github.com/users/${user}/repos?per_page=5&sort=created:asc`;
   axios
     .get(API_URL)
@@ -60,7 +60,7 @@ function getUserRepo(user) {
       console.log(result.data);
       reposContainer.innerHTML = generateReposCard(result.data);
     })
-    .catch(() => displayError("Something Went Wrong! Oops!"));
+    .catch((err) => {console.error(err); displayError("Something Went Wrong! Oops!")});
 }
 
 function getUserProfile(user) {
