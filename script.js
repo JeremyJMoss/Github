@@ -12,12 +12,14 @@ function displayError(error) {
 function generateReposCard(reposData) {
   const reposCard = reposData
     .map((repo) => {
-      return `<div class="col-12 py-2">
-    <div class="card">
+      return `<div class="col-12 py-2 repoCard">
+    <div class="card reposCard">
       <div class="card-body">
-        <h5 class="card-title"><a href="${repo.html_url}">${repo.full_name}</a></h5>
+        <h5 class="card-title reposCardTitle"><a href="${repo.html_url}">${
+        repo.full_name
+      }</a></h5>
         <p class="card-text">
-          ${repo.description}
+          ${repo.description ? repo.description : "N/A"}
         </p>
       </div>
     </div>
@@ -29,30 +31,37 @@ function generateReposCard(reposData) {
 
 function generateProfileCard(profileData) {
   return `
-    <div class="card" style="width: 100%; max-width: 400px">
+    <div class="card profileCard" style="width: 100%; max-width: 400px">
               <img
                 src="${profileData.avatar_url}"
                 class="card-img-top"
                 alt="Image"
               />
               <div class="card-body">
-                <h5 class="card-title">${profileData.name}</h5>
-                <p class="card-text">${profileData.login}</p>
+                <h5 class="card-title profileTitle">${profileData.name}</h5>
+                <p class="card-text loginText">${profileData.login}</p>
                 <p class="card-text">${profileData.location}</p>
                 <p class="card-text"><a href="#">${profileData.html_url}</a></p>
                 <p class="card-text"><a href="#">${profileData.blog}</a></p>
-                <p class="card-text">${profileData.email}</p>
-                <p class="card-text">${profileData.bio}</p>
-                <hr />
-                <p class="card-text">Followers: ${profileData.followers}</p>
-                <p class="card-text">Following: ${profileData.following}</p>
-                <a href="#" class="btn btn-primary">View Github Profile</a>
+                <p class="card-text">
+                  <img src="https://img.icons8.com/ios-glyphs/30/000000/email.png" width="20px" height="20px"/> ${
+                    profileData.email ? profileData.email : "Hidden"
+                  }</p>
+                <p class="card-text">${
+                  profileData.bio ? profileData.bio : "Hidden"
+                }</p>
+                <div class="follow">
+                <img src="https://img.icons8.com/ios/30/000000/conference-call--v1.png" width="20px" height="20px"/>
+                <p class="card-text">${profileData.followers} Followers</p>
+                <p class="card-text">${profileData.following} Following</p>
+                </div>
+                <a href="#" class="btn btn-dark">View Github Profile</a>
               </div>
             </div>`;
 }
 
 function getUserRepo(user) {
-  let reposContainer = document.querySelector("#reposContainer");
+  let reposContainer = document.getElementById("reposContainer");
   const API_URL = `https://api.github.com/users/${user}/repos?per_page=5&sort=created:asc`;
   axios
     .get(API_URL)
@@ -60,7 +69,10 @@ function getUserRepo(user) {
       console.log(result.data);
       reposContainer.innerHTML = generateReposCard(result.data);
     })
-    .catch(() => displayError("Something Went Wrong! Oops!"));
+    .catch((err) => {
+      console.error(err);
+      displayError("Something Went Wrong! Oops!");
+    });
 }
 
 function getUserProfile(user) {
