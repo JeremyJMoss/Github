@@ -51,6 +51,8 @@ function generateRepository(reposData) {
 
 function searchRepo(e) {
   e.preventDefault();
+  const loading = document.getElementById("loading");
+  loading.classList.remove("d-none");
   const repositories2 = document.getElementById("repositories");
   const reposSearch = document.getElementById("reposSearch");
   axios
