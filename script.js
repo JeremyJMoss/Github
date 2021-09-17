@@ -35,7 +35,8 @@ function generateRepository(reposData) {
       return `<div class="col-12 py-2 repoCard">
     <div class="card reposCard">
       <div class="card-body">
-        <h5 class="card-title reposCardTitle"><a href="${repo.html_url}">${
+      <img src="${repo.owner.avatar_url}" width="30px" height="30px">  
+      <h5 class="card-title reposCardTitle"><a href="${repo.html_url}">${
         repo.name
       }</a></h5>
         <p class="card-text">
