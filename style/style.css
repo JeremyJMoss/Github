@@ -90,3 +90,12 @@ body {
   flex-wrap: wrap;
   margin-left: -20px;
 }
+
+.calendar {
+  width: 95% !important;
+  margin-bottom: 25px;
+  margin: 0;
+  margin-left: 8px;
+  margin-top: 8px;
+  border: none;
+}

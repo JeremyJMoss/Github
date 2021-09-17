@@ -129,10 +129,6 @@ function getUserProfile(user) {
 
 function main() {
   let searchForm = document.querySelector(".searchForm");
-
-  getUserProfile("JeremyJMoss");
-  getUserRepo("JeremyJMoss");
-
   searchForm.onsubmit = function (ev) {
     ev.preventDefault();
     let username = ev.target[0].value;
