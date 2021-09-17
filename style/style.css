@@ -78,3 +78,15 @@ body {
 .card-body p {
   font-size: 0.8rem;
 }
+
+.searchForm2 {
+  margin: 20px 0 0 0;
+  width: 350px;
+}
+
+#repositories {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: -20px;
+}

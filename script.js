@@ -29,6 +29,41 @@ function generateReposCard(reposData) {
   return reposCard;
 }
 
+function generateRepository(reposData) {
+  const reposCard = reposData
+    .map((repo) => {
+      return `<div class="col-12 py-2 repoCard">
+    <div class="card reposCard">
+      <div class="card-body">
+        <h5 class="card-title reposCardTitle"><a href="${repo.html_url}">${
+        repo.name
+      }</a></h5>
+        <p class="card-text">
+          ${repo.description ? repo.description : "N/A"}
+        </p>
+      </div>
+    </div>
+  </div>`;
+    })
+    .join("");
+  return reposCard;
+}
+
+function searchRepo(e) {
+  e.preventDefault();
+  const repositories2 = document.getElementById("repositories");
+  const reposSearch = document.getElementById("reposSearch");
+  axios
+    .get(`https://api.github.com/search/repositories?q=${reposSearch.value}`)
+    .then((response) => {
+      repositories2.innerHTML = generateRepository(response.data.items);
+    })
+    .catch((err) => console.log(err));
+}
+
+const reposForm = document.getElementById("reposForm");
+reposForm.addEventListener("submit", searchRepo);
+
 function generateProfileCard(profileData) {
   return `
     <div class="card profileCard" style="width: 100%; max-width: 400px">
@@ -62,19 +97,20 @@ function generateProfileCard(profileData) {
 
 function getUserRepo(user) {
   let reposContainer = document.getElementById("reposContainer");
-  const API_URL = `https://api.github.com/users/${user}/repos?`;
+  const API_URL = `https://api.github.com/users/${user}/repos`;
   axios
     .get(API_URL)
     .then((result) => {
-      console.log(result.data);
       reposContainer.innerHTML = generateReposCard(result.data);
     })
     .catch((err) => {
-      displayError(err.response.data.message);
+      console.log(err);
+      displayError(err.responses.data.message);
     });
 }
 
 function getUserProfile(user) {
+  new GitHubCalendar(".calendar", user);
   let profileData = document.querySelector(".profileData");
   const API_URL = `https://api.github.com/users/${user}`;
   axios
@@ -82,7 +118,10 @@ function getUserProfile(user) {
     .then((result) => {
       profileData.innerHTML = generateProfileCard(result.data);
     })
-    .catch((err) => displayError("err.reponse.data.message"));
+    .catch((err) => {
+      console.log(err);
+      displayError(err.response.data.message);
+    });
 }
 
 function main() {
